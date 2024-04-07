@@ -1,3 +1,4 @@
 fastapi
 openai==1.16.2
 uvicorn
+locust
