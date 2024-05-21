@@ -3,10 +3,10 @@ from semantic_router import Route, RouteLayer
 from semantic_router.utils.function_call import get_schema
 
 
-def zupinnovation_balancesheet_documents(year: str):
+def balancesheet_documents(year: str):
     return f"Year: {year}"
 
-def zupinnovation_employees(employee: dict, question: str):
+def employees(employee: dict, question: str):
     """
     employee: information about the employee
     question: employee questions
@@ -20,26 +20,26 @@ class Router:
         self._layer = self._route_layer()
 
     def _route_layer(self):
-        schema = get_schema(zupinnovation_balancesheet_documents)
-        zupinnovation_employees_schema = get_schema(zupinnovation_employees)
+        schema = get_schema(balancesheet_documents)
+        employees_schema = get_schema(employees)
 
         return RouteLayer(
             encoder=self.encoder, 
             routes=[
                 Route(
-                    name="zupinnovation_balancesheet_documents",
+                    name="balancesheet_documents",
                     utterances=[
-                        "zupinnovation_balancesheet_documents",
+                        "balancesheet_documents",
                         "balance sheet documents",
                         "documents",
                         "tools",
-                        "zupinnovation_tools",
+                        "tools",
                         "metrics",
                     ],
                     function_schema=schema
                 ), 
                 Route(
-                    name="zupinnovation_employees",
+                    name="employees",
                     utterances=[
                         "employee business domain",
                         "paternity leave", 
@@ -48,7 +48,7 @@ class Router:
                         "health insurance",
                         "vacation"
                     ],
-                    function_schema=zupinnovation_employees_schema              
+                    function_schema=employees_schema              
                 )
             ]
         )
@@ -57,10 +57,10 @@ class Router:
         try:
             route = self._layer(request_body)            
             if route:
-                if route.name == "zupinnovation_balancesheet_documents":                    
-                    return "zupinnovation_balancesheet_documents"
-                elif route.name == "zupinnovation_employees":                    
-                    return "zupinnovation_employees"
+                if route.name == "balancesheet_documents":                    
+                    return "balancesheet_documents"
+                elif route.name == "employees":                    
+                    return "employees"
                 else:                
                     return "No tools are required"
             else:                
