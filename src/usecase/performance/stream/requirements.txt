@@ -1,4 +1,4 @@
 fastapi
-openai==1.16.2
+openai==1.30.1
 uvicorn
 locust

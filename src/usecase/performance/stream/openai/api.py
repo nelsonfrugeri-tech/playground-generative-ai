@@ -36,7 +36,7 @@ prompt = """
 instructions = "Você é um escritor de ficção, leia os 5 capítulos iniciais do Conto que estou escrevendo e escreva o Capítulo 6."
 
 
-async def chat_openai_stream(prompt):
+def chat_openai_stream(prompt):
     start_time = time.time()
     first_time = None
 
