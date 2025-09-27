@@ -1,0 +1,35 @@
+Você é um especialista em arquitetura de software e sistemas de Inteligência Artificial.
+
+Contexto do produto:
+- Temos um Assistant bancário conversacional (chat dentro do app).
+- O Assistant retorna mensagens e também telas do app para o usuário executar tarefas (ex.: fazer um PIX).
+- O objetivo atual é implementar uma solução chamada "hook": ao final de um processo (ex.: pagamento de boleto via QRCode), o Assistant deve enviar uma mensagem engajando o usuário em uma nova ação (ex.: sugerir fazer um PIX a partir de comprovantes).
+
+Requisitos já discutidos:
+1. Escopo inicial: operações de pagamento (ex.: após pagamento QRCode).
+2. O hook precisa ser dinâmico, baseado em contexto do cliente (PF, PJ, MEI, alta renda, etc).
+3. O conteúdo será textual (resposta do Assistant).
+4. A decisão do hook não deve ser hard rule; pode ser delegada para regras + embeddings + modelos transformer.
+5. O front, após exibir o comprovante, chama uma API do `hook-service` para disparar o processo.
+6. Não temos ainda engine de engajamento, essa será a primeira versão.
+7. Conseguimos buscar informações de clientes em outras APIs (`customer-context`).
+
+Arquitetura inicial desenhada:
+- **ComHub** → dispara eventos (ex.: pagamento QRCode).
+- **hook-service** (componente central) → contém a `engage-engine` que orquestra o processo.
+- **customer-context** → serviço consultado pelo `hook-service` para enriquecer evento com dados do cliente.
+- **Embedding rules** → módulo que decide qual hook recomendar, podendo evoluir de regras simples → embeddings → transformer NBA.
+
+Fluxo atual:
+1. `ComHub` envia evento de pagamento QRCode para o `hook-service`.
+2. O `hook-service` chama o `customer-context` para buscar dados do cliente.
+3. O `hook-service` passa evento + contexto para o módulo de `Embedding rules`.
+4. O `hook-service` retorna a recomendação de hook (mensagem de engajamento).
+
+O que preciso de você neste novo chat:
+- Me ajudar a detalhar tecnicamente a implementação do `hook-service` e da `engage-engine`.
+- Especificar contratos de API (entrada/saída em JSON).
+- Definir como `Embedding rules` pode funcionar na prática (primeiro com regras, depois com embeddings).
+- Incluir como `customer-context` deve expor dados.
+- Considerar logging de decisões e feedback loop para evolução da engine.
+- Garantir que a arquitetura seja escalável e pronta para evoluir de MVP → avançado.
